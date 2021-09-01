@@ -6,6 +6,20 @@ const app = express();
 // listen for requests
 app.listen(3000);
 
+//fires for every request
+app.use((req, res, next) => {
+  console.log('new request made: ');
+  console.log('host: ', req.hostname);//localhost
+  console.log('path: ', req.path);
+  console.log('method: ', req.method);
+  next();//to avoid page hanging
+});
+
+app.use((req, res, next) => {
+  console.log('in the next middleware');
+  next();//to avoid page hanging
+});
+
 // register view engine
 app.set('view engine', 'ejs');
 // app.set('views', 'myviews');
@@ -28,6 +42,7 @@ app.get('/blogs/create', (req, res) => {
 });
 
 // 404 page
+//Must be at the end!!!
 app.use((req, res) => {
   res.status(404).render('404', { title: '404' });
 });

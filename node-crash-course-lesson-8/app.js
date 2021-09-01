@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');// an http request longer middleware for Node.js
 
 // express app
 const app = express();
@@ -6,17 +7,14 @@ const app = express();
 // listen for requests
 app.listen(3000);
 
+app.use(morgan('dev'));//How its going to be loaded
+
 //fires for every request
 app.use((req, res, next) => {
   console.log('new request made: ');
   console.log('host: ', req.hostname);//localhost
   console.log('path: ', req.path);
   console.log('method: ', req.method);
-  next();//to avoid page hanging
-});
-
-app.use((req, res, next) => {
-  console.log('in the next middleware');
   next();//to avoid page hanging
 });
 

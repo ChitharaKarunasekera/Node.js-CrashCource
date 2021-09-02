@@ -6,13 +6,11 @@ const app = express();
 
 //Connect to Mongo DB
 const dbURI = 'mongodb+srv://chithzz01:chithzz01@nodetuts.sohmq.mongodb.net/node-tuts?retryWrites=true&w=majority';
-mongoose.connect(dbURI)
-    .then((result) => console.log('connected to db'))
+mongoose.connect(dbURI,)
+    .then((result) => app.listen(3000))
     .catch((err) => console.log(err))
 
-// listen for requestsy
-
-app.listen(3000);
+// listen for requests
 
 //middleware and static files
 app.use(express.static('public'));

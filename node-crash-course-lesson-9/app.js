@@ -69,12 +69,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    const blogs = [
-        {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-        {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    ];
-    res.render('index', {title: 'Home', blogs});
+    response.redirect('/blogs');
 });
 
 app.get('/about', (req, res) => {
@@ -84,7 +79,15 @@ app.get('/about', (req, res) => {
 
 //Blog routes
 //page where all blogs are displayed
-//app.get('/blogs')//page where all blogs are displayed
+app.get('/blogs', (req, res) =>{
+  Blog.find()
+      .then((result) => {
+          res.render('index', {title: 'All Blogs', blogs: result})
+      })
+      .catch((err) => {
+          console.log('err')
+      })
+})
 
 
 app.get('/blogs/create', (req, res) => {

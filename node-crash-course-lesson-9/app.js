@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');// an http request longer middleware for Node.js
 const mongoose = require('mongoose');
+const Blog = require('./models/blog');//import blog file
+
 // express app
 const app = express();
 
@@ -10,11 +12,52 @@ mongoose.connect(dbURI,)
     .then((result) => app.listen(3000))
     .catch((err) => console.log(err))
 
-// listen for requests
+// register view engine
+app.set('view engine', 'ejs');
+// app.set('views', 'myviews');
 
 //middleware and static files
 app.use(express.static('public'));
 app.use(morgan('dev'));//How its going to be loaded
+
+// //mongoose and mongo sandbox routs
+// app.get('/add-blog', (req, res) => {
+//     const blog = new Blog({
+//         title: 'new blog 2',
+//         snippet: 'about my new blog',
+//         body: 'more about my blog'
+//     });
+//
+//     blog.save()
+//         .then((result) => {
+//             res.send(result)
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+// })
+//
+// app.get('/all-blogs', (req, res) => {
+//     Blog.find()//Get all blogs in collection
+//         .then((result) => {
+//             res.send(result);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         })
+// })
+
+//find individual blog
+app.get('/single-blog', (req, res) => {
+    //find the blog using its ID
+    Blog.findById('613073271a96ce7d335ebbb9')//finds the blog that has this id
+        .then((result) => {
+            res.send(result)
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+})
 
 //fires for every request
 app.use((req, res, next) => {
@@ -24,10 +67,6 @@ app.use((req, res, next) => {
     console.log('method: ', req.method);
     next();//to avoid page hanging
 });
-
-// register view engine
-app.set('view engine', 'ejs');
-// app.set('views', 'myviews');
 
 app.get('/', (req, res) => {
     const blogs = [
@@ -41,6 +80,12 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about', {title: 'About'});
 });
+
+
+//Blog routes
+//page where all blogs are displayed
+//app.get('/blogs')//page where all blogs are displayed
+
 
 app.get('/blogs/create', (req, res) => {
     res.render('create', {title: 'Create a new blog'});
